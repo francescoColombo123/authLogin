@@ -11,7 +11,6 @@ import { Router } from "@angular/router";
 export class AuthService{
 
     dataAuth: Auth | null = null
-    islogged: boolean = false
 
     constructor(private http: HttpClient, public router: Router){
     }
@@ -22,7 +21,10 @@ export class AuthService{
         .set('pass',loginObject?.password)
         
         this.http.get<Auth>('http://localhost:3000/login', {params: params})
-        .subscribe(res => this.dataAuth = res)
+        .subscribe(res => {
+            this.dataAuth = res
+            this.router.navigateByUrl("utenti")
+            })
         }
 
     logout(){
@@ -31,8 +33,9 @@ export class AuthService{
     }
 
     isLogged(){
-        const isAuth: boolean = this.dataAuth && this.dataAuth.token ? true : false
-        return this.isLogged;
+        console.log('risultato', this.dataAuth && this.dataAuth.token ? true : false);
+        
+        return  this.dataAuth && this.dataAuth.token ? true : false
     }
 
 
